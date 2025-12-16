@@ -1,16 +1,10 @@
-import { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
-
-const regions = [
-  'Москва', 'Санкт-Петербург', 'Московская область', 'Краснодарский край',
-  'Свердловская область', 'Новосибирская область', 'Татарстан', 'Челябинская область',
-  'Нижегородская область', 'Самарская область', 'Ростовская область', 'Башкортостан'
-];
 
 const addictionTypes = [
   {
@@ -39,54 +33,6 @@ const addictionTypes = [
   }
 ];
 
-const rehabilitationCenters = [
-  {
-    name: 'Центр "Новая Жизнь"',
-    region: 'Москва',
-    type: ['alcohol', 'drugs'],
-    phone: '+7 (495) 123-45-67',
-    programs: ['Детоксикация', 'Стационар', 'Психотерапия'],
-    duration: 'от 1 до 6 месяцев',
-    verified: true
-  },
-  {
-    name: 'Реабилитационный центр "Путь к себе"',
-    region: 'Санкт-Петербург',
-    type: ['alcohol', 'drugs', 'gaming'],
-    phone: '+7 (812) 987-65-43',
-    programs: ['Программа 12 шагов', 'Семейная терапия', 'Амбулаторное наблюдение'],
-    duration: 'от 3 месяцев',
-    verified: true
-  },
-  {
-    name: 'Клиника "Возрождение"',
-    region: 'Московская область',
-    type: ['alcohol', 'drugs'],
-    phone: '+7 (499) 555-12-34',
-    programs: ['Медикаментозная терапия', 'Реабилитация', 'Социальная адаптация'],
-    duration: 'индивидуально',
-    verified: false
-  },
-  {
-    name: 'Центр помощи "Свобода"',
-    region: 'Краснодарский край',
-    type: ['drugs'],
-    phone: '+7 (861) 222-33-44',
-    programs: ['Детоксикация', 'Долгосрочная реабилитация', 'Группы поддержки'],
-    duration: 'от 6 месяцев',
-    verified: true
-  },
-  {
-    name: 'Центр "Второй шанс"',
-    region: 'Новосибирская область',
-    type: ['alcohol', 'gaming'],
-    phone: '+7 (383) 777-88-99',
-    programs: ['Когнитивная терапия', 'Трудотерапия', 'Ресоциализация'],
-    duration: 'от 2 месяцев',
-    verified: true
-  }
-];
-
 const successStories = [
   {
     name: 'Александр, 34 года',
@@ -109,15 +55,6 @@ const successStories = [
 ];
 
 export default function Index() {
-  const [selectedRegion, setSelectedRegion] = useState<string>('Все регионы');
-  const [selectedType, setSelectedType] = useState<string>('all');
-
-  const filteredCenters = rehabilitationCenters.filter(center => {
-    const regionMatch = selectedRegion === 'Все регионы' || center.region === selectedRegion;
-    const typeMatch = selectedType === 'all' || center.type.includes(selectedType);
-    return regionMatch && typeMatch;
-  });
-
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
@@ -151,12 +88,12 @@ export default function Index() {
                   Горячая линия 24/7
                 </Button>
               </a>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 gap-2" onClick={() => {
-                document.getElementById('centers')?.scrollIntoView({ behavior: 'smooth' });
-              }}>
-                <Icon name="MapPin" size={24} />
-                Найти центр помощи
-              </Button>
+              <a href="#info">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-6 gap-2">
+                  <Icon name="Info" size={24} />
+                  Подробнее о лечении
+                </Button>
+              </a>
             </div>
             <div className="flex items-center justify-center gap-6 pt-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -235,98 +172,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="centers" className="py-16 bg-accent/20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Центры реабилитации по России</h2>
-          <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Выберите регион и тип зависимости для поиска подходящего центра помощи
-          </p>
-          
-          <div className="max-w-6xl mx-auto space-y-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1">
-                <label className="text-sm font-medium mb-2 block">Регион</label>
-                <select 
-                  className="w-full px-4 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-                  value={selectedRegion}
-                  onChange={(e) => setSelectedRegion(e.target.value)}
-                >
-                  <option>Все регионы</option>
-                  {regions.map(region => (
-                    <option key={region}>{region}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex-1">
-                <label className="text-sm font-medium mb-2 block">Тип зависимости</label>
-                <select 
-                  className="w-full px-4 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                >
-                  <option value="all">Все виды</option>
-                  <option value="alcohol">Алкогольная</option>
-                  <option value="drugs">Наркотическая</option>
-                  <option value="gaming">Игровая</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              {filteredCenters.map((center, idx) => (
-                <Card key={idx} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2">
-                      <CardTitle className="text-xl">{center.name}</CardTitle>
-                      {center.verified && (
-                        <Badge variant="default" className="gap-1 bg-secondary">
-                          <Icon name="BadgeCheck" size={14} />
-                          Проверено
-                        </Badge>
-                      )}
-                    </div>
-                    <CardDescription className="flex items-center gap-2">
-                      <Icon name="MapPin" size={16} />
-                      {center.region}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <p className="text-sm font-medium mb-2">Программы лечения:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {center.programs.map((program, i) => (
-                          <Badge key={i} variant="outline">{program}</Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Icon name="Clock" size={16} />
-                      <span>Длительность: {center.duration}</span>
-                    </div>
-                    <a href={`tel:${center.phone.replace(/[^0-9+]/g, '')}`}>
-                      <Button className="w-full gap-2">
-                        <Icon name="Phone" size={18} />
-                        {center.phone}
-                      </Button>
-                    </a>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {filteredCenters.length === 0 && (
-              <div className="text-center py-12">
-                <Icon name="Search" size={48} className="mx-auto text-muted-foreground mb-4" />
-                <p className="text-lg text-muted-foreground">
-                  По выбранным параметрам центры не найдены. Попробуйте изменить фильтры.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-background">
+      <section id="info" className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Истории выздоровления</h2>
           <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
